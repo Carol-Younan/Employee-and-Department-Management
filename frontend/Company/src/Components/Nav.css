@@ -1,0 +1,33 @@
+.toolbar {
+  display: flex;
+  flex-direction: column; /* عشان العناصر تبقى فوق بعض */
+  align-items: stretch;   /* search ياخد العرض كله */
+  gap: 8px; /* مسافة بسيطة بين العناصر */
+}
+
+.search {
+  position: relative;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.15);
+  width: 100%; /* ياخد كل العرض */
+}
+
+.search:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+.search-icon-wrapper {
+  padding: 0 16px;
+  height: 100%;
+  position: absolute;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.styled-input-base {
+  color: inherit;
+  width: 100%;
+  padding-left: 48px; /* مساحة كافية للأيكون */
+}

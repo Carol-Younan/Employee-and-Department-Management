@@ -1,0 +1,14 @@
+@font-face {
+  font-family: "Libertinus Keyboard";
+  src: url("./assets/fonts/LibertinusKeyboard.ttf") format("truetype");
+}
+
+.Welcome ,:root{
+  font-family: "Libertinus Keyboard", sans-serif;
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  background-color: white;
+  color: black;
+}
