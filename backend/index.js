@@ -188,7 +188,12 @@ app.get("/deptAll", async (req, res) => {
     const depts = await Dept.find();
     res.json(depts);
   } catch (error) {
-    res.status(500).json({ message: "error", error });
+    console.error("DEPT ERROR:", error);
+
+    res.status(500).json({
+      message: "error",
+      error: error.message,
+    });
   }
 });
 
