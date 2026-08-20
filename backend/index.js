@@ -236,4 +236,10 @@ app.get("/deptEmpCount/:id", async (req, res) => {
     res.status(500).json({ message: "error", error });
   }
 });
-app.listen(5000, console.log("Everything is okay!"));
+if (require.main === module) {
+  app.listen(5000, () => {
+    console.log("Everything is okay!");
+  });
+}
+
+module.exports = app;
