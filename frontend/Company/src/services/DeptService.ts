@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5000";
+const API_URL = "https://employee-and-department-management-sandy.vercel.app";
 
 export const getDepts = async (page: number, limit: number) => {
   const res = await fetch(`${API_URL}/dept?page=${page}&limit=${limit}`);
@@ -10,24 +10,22 @@ export const getAllDepts = async () => {
   return await res.json();
 };
 
-export const getDeptsById = async (id:number) => {
+export const getDeptsById = async (id: number) => {
   const res = await fetch(`${API_URL}/dept/${id}`);
   return await res.json();
 };
 
-export const getEmpInDept = async (id:number)=>{
-    const res = await fetch(`${API_URL}/deptEmp/${id}`);
-    return await res.json();
+export const getEmpInDept = async (id: number) => {
+  const res = await fetch(`${API_URL}/deptEmp/${id}`);
+  return await res.json();
 };
 
-export const getEmpCount = async (id:number)=>{
-    const res = await fetch(`${API_URL}/deptEmpCount/${id}`);
-    return await res.json();
+export const getEmpCount = async (id: number) => {
+  const res = await fetch(`${API_URL}/deptEmpCount/${id}`);
+  return await res.json();
 };
 
-export const addDept = async (
-    department: {name: string;
-}) => {
+export const addDept = async (department: { name: string }) => {
   const res = await fetch(`${API_URL}/dept`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -37,10 +35,7 @@ export const addDept = async (
   return await res.json();
 };
 
-export const updateDept = async (
-  id: number,
-  dept: { DeptName: string }
-) => {
+export const updateDept = async (id: number, dept: { DeptName: string }) => {
   const res = await fetch(`${API_URL}/dept/${id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },

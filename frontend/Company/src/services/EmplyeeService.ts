@@ -1,19 +1,19 @@
-const API_URL = "http://localhost:5000";
+const API_URL = "https://employee-and-department-management-sandy.vercel.app";
 
 export const getEmployees = async () => {
   const res = await fetch(`${API_URL}/emp`);
   return await res.json();
 };
 
-export const getEmployeesId = async(id:number)=>{
-    const res = await fetch(`${API_URL}/emp/${id}`);
-    return await res.json();
+export const getEmployeesId = async (id: number) => {
+  const res = await fetch(`${API_URL}/emp/${id}`);
+  return await res.json();
 };
 
-export const getDeptName = async(id:number)=>{
-  const res=await fetch (`${API_URL}/dept/${id}`);
+export const getDeptName = async (id: number) => {
+  const res = await fetch(`${API_URL}/dept/${id}`);
   return await res.json();
-}
+};
 
 export const getEmployeesWithDept = async () => {
   const res = await fetch(`${API_URL}/emp`);
@@ -21,19 +21,19 @@ export const getEmployeesWithDept = async () => {
   const employeesWithDept = await Promise.all(
     employees.map(async (emp: any) => {
       let deptName = "";
-      if (emp.DeptId) { // 👈 تأكدي الأول إنه موجود
+      if (emp.DeptId) {
         const dept = await getDeptName(emp.DeptId);
         deptName = dept.DeptName;
       }
-     return {
+      return {
         EmployeeId: emp.EmployeeId,
         EmployeeName: emp.EmployeeName,
         EmployeeSalary: emp.EmployeeSalary,
         EmployeeAge: emp.EmployeeAge,
-        DeptId: emp.DeptId ?? 0,   // 👈 خليها default 0 لو undefined
+        DeptId: emp.DeptId ?? 0,
         DeptName: deptName,
       };
-    })
+    }),
   );
   return employeesWithDept;
 };
@@ -66,7 +66,12 @@ export const addEmployee = async (employee: {
 
 export const updateEmployee = async (
   id: number,
-  updatedData: { name?: string; salary?: number; age?: number; DeptId?: number }
+  updatedData: {
+    name?: string;
+    salary?: number;
+    age?: number;
+    DeptId?: number;
+  },
 ) => {
   const res = await fetch(`${API_URL}/emp/${id}`, {
     method: "PUT",
@@ -92,4 +97,3 @@ export const deleteAllEmployees = async () => {
   if (!res.ok) throw new Error("Failed to delete employees");
   return await res.json();
 };
-
