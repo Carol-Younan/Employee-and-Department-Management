@@ -10,16 +10,23 @@ app.use(express.json());
 
 const Employee = require("./models/employee");
 const Dept = require("./models/dept");
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => {
+const connectDB = async () => {
+  try {
+    if (mongoose.connection.readyState === 1) {
+      return;
+    }
+
+    await mongoose.connect(process.env.MONGO_URI);
     console.log("connected successfully");
-  })
-  .catch((error) => {
+  } catch (error) {
     console.log("error with connecting", error);
-  });
+    throw error;
+  }
+};
 app.get("/deptWithId/:id", async (req, res) => {
   try {
+    await connectDB();
+
     const deptId = Number(req.params.id);
     const Thedept = await Dept.findOne({ DeptId: deptId });
     if (!Thedept) {
@@ -33,6 +40,8 @@ app.get("/deptWithId/:id", async (req, res) => {
 });
 
 app.post("/emp", async (req, res) => {
+  await connectDB();
+
   const newEmployee = new Employee();
   newEmployee.EmployeeId = Employee.EmployeeId;
   newEmployee.EmployeeName = req.body.name;
@@ -45,6 +54,8 @@ app.post("/emp", async (req, res) => {
 
 app.put("/emp/:id", async (req, res) => {
   try {
+    await connectDB();
+
     const empId = Number(req.params.id);
     const updatedData = {};
 
@@ -69,6 +80,8 @@ app.put("/emp/:id", async (req, res) => {
 });
 app.delete("/emp/:id", async (req, res) => {
   try {
+    await connectDB();
+
     const empId = Number(req.params.id);
     const deletedEmp = await Employee.findOneAndDelete({ EmployeeId: empId });
     if (!deletedEmp) {
@@ -82,6 +95,8 @@ app.delete("/emp/:id", async (req, res) => {
 });
 app.delete("/emp", async (req, res) => {
   try {
+    await connectDB();
+
     const deletedEmp = await Employee.deleteMany();
     if (!deletedEmp) {
       return res.status(404).json({ message: "not found" });
@@ -94,6 +109,8 @@ app.delete("/emp", async (req, res) => {
 });
 app.get("/emp/:id", async (req, res) => {
   try {
+    await connectDB();
+
     const empId = Number(req.params.id);
     const TheEmp = await Employee.findOne({ EmployeeId: empId });
     if (!TheEmp) {
@@ -107,6 +124,8 @@ app.get("/emp/:id", async (req, res) => {
 });
 app.get("/emp", async (req, res) => {
   try {
+    await connectDB();
+
     const TheEmp = await Employee.find();
     if (TheEmp.length === 0) {
       return res.status(404).json({ message: "not found" });
@@ -118,6 +137,8 @@ app.get("/emp", async (req, res) => {
 });
 //Dept
 app.post("/dept", async (req, res) => {
+  await connectDB();
+
   const newDept = new Dept();
   newDept.DeptId = Dept.DeptId;
   newDept.DeptName = req.body.name;
@@ -127,6 +148,8 @@ app.post("/dept", async (req, res) => {
 
 app.put("/dept/:id", async (req, res) => {
   try {
+    await connectDB();
+
     const deptId = Number(req.params.id);
     const updateNames = {};
 
@@ -148,6 +171,8 @@ app.put("/dept/:id", async (req, res) => {
 
 app.delete("/dept/:id", async (req, res) => {
   try {
+    await connectDB();
+
     const deptId = Number(req.params.id);
     const deleteDept = await Dept.findOneAndDelete({ DeptId: deptId });
     if (!deleteDept) {
@@ -161,6 +186,7 @@ app.delete("/dept/:id", async (req, res) => {
 });
 app.delete("/dept", async (req, res) => {
   try {
+    await connectDB();
     const deleteDept = await Dept.deleteMany();
     if (!deleteDept) {
       return res.status(404).json({ message: "not found" });
@@ -172,6 +198,8 @@ app.delete("/dept", async (req, res) => {
 });
 app.get("/dept/:id", async (req, res) => {
   try {
+    await connectDB();
+
     const deptId = Number(req.params.id);
     const TheDept = await Dept.findOne({ DeptId: deptId });
     if (!TheDept) {
@@ -185,6 +213,8 @@ app.get("/dept/:id", async (req, res) => {
 
 app.get("/deptAll", async (req, res) => {
   try {
+    await connectDB();
+
     const depts = await Dept.find();
     res.json(depts);
   } catch (error) {
@@ -199,6 +229,8 @@ app.get("/deptAll", async (req, res) => {
 
 app.get("/dept", async (req, res) => {
   try {
+    await connectDB();
+
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 5;
     const skip = (page - 1) * limit;
@@ -226,6 +258,8 @@ app.get("/dept", async (req, res) => {
 app.get("/deptEmp/:id", async (req, res) => {
   const deptId = req.params.id;
   try {
+    await connectDB();
+
     const Emp = await Employee.find({ DeptId: deptId });
     res.json(Emp);
   } catch (error) {
@@ -235,6 +269,8 @@ app.get("/deptEmp/:id", async (req, res) => {
 app.get("/deptEmpCount/:id", async (req, res) => {
   const deptId = req.params.id;
   try {
+    await connectDB();
+
     const Emp = await Employee.countDocuments({ DeptId: deptId });
     res.json(Emp);
   } catch (error) {
